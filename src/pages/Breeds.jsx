@@ -4,7 +4,7 @@ import { fetchDogsImages } from '../libs/DogsApis'
 import Layout from './Layout'
 import { SearchInput } from '@/components/SearchInput'
 
-const Breeds = () => {
+const Breeds = ({ user }) => {
   const [apiData, setApiData] = useState(null)
 
   // call the Images api

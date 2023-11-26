@@ -1,13 +1,12 @@
 import React, { useState } from 'react'
 import { validateForm, submitForm } from '../libs/ContactApis'
 
-export const ContactSections = () => {
+export const ContactSections = ({ user }) => {
   const [formData, setFormData] = useState({
-    fullName: '',
-    email: '',
+    fullName: user ? user.firstName : '',
+    email: user ? user.email : '',
     message: '',
   })
-
   const [errors, setErrors] = useState({
     fullName: '',
     email: '',
@@ -41,15 +40,13 @@ export const ContactSections = () => {
     const submitResult = await submitForm(formData)
 
     if (submitResult.success) {
-      console.log('Contact data submitted successfully')
       setFormData({
-        fullName: '',
-        email: '',
+        fullName: user ? user : '',
+        email: user ? user : '',
         message: '',
       })
       setShowSuccessModal(true)
     } else {
-      console.error('Failed to submit contact data:', submitResult.error)
     }
   }
 
@@ -72,7 +69,6 @@ export const ContactSections = () => {
         </div>
       </div>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {' '}
         <div className="mb-6">
           <label
             htmlFor="full-name"
@@ -86,8 +82,9 @@ export const ContactSections = () => {
               name="fullName"
               id="full-name"
               autoComplete="given-name"
-              value={formData.fullName}
+              defaultValue={user ? user.firstName : ''}
               onChange={handleChange}
+              readOnly={user ? true : false}
               className="w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
             />
           </div>
@@ -105,8 +102,9 @@ export const ContactSections = () => {
               name="email"
               id="email"
               autoComplete="email"
-              value={formData.email}
+              defaultValue={user ? user.email : ''}
               onChange={handleChange}
+              readOnly={user ? true : false}
               className="w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
             />
           </div>

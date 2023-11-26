@@ -1,12 +1,14 @@
 'use client'
 import React, { useState } from 'react'
 import Link from 'next/link'
+import Avatar from '@mui/material/Avatar'
+import LockPersonIcon from '@mui/icons-material/LockPerson'
 
-export const Navigation = ({ router }) => {
+export const Navigation = ({ location, user, router }) => {
   const [isProfileOpen, setIsProfileOpen] = useState(false)
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
 
-  const currentPath = router
+  const currentPath = location
 
   const toggleProfile = () => {
     setIsProfileOpen(!isProfileOpen)
@@ -15,7 +17,10 @@ export const Navigation = ({ router }) => {
   const toggleMobileMenu = () => {
     setIsMobileMenuOpen(!isMobileMenuOpen)
   }
-
+  const handleSignOut = () => {
+    localStorage.removeItem('user')
+    router.push('/SignIn')
+  }
   return (
     <>
       <nav className="bg-gray-800">
@@ -92,18 +97,45 @@ export const Navigation = ({ router }) => {
                   >
                     Dog Breeds
                   </Link>
-                  <Link
-                    href="#"
-                    className="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium"
-                  >
-                    Projects
-                  </Link>
-                  <Link
-                    href="#"
-                    className="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium"
-                  >
-                    Calendar
-                  </Link>
+
+                  {user ? (
+                    <>
+                      <Link
+                        href="#"
+                        className="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium"
+                      >
+                        Projects
+                      </Link>
+                      <Link
+                        href="/Calendar"
+                        className={`${
+                          currentPath === '/Calendar'
+                            ? 'bg-gray-900 text-white'
+                            : 'text-gray-300 hover:bg-gray-700 hover:text-white'
+                        } rounded-md px-3 py-2 text-sm font-medium`}
+                      >
+                        Calendar
+                      </Link>
+                    </>
+                  ) : (
+                    <>
+                      {' '}
+                      <Link
+                        href="#"
+                        className="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium"
+                        disabled={true}
+                      >
+                        <LockPersonIcon className="h-4 w-4 " /> Projects
+                      </Link>
+                      <Link
+                        href="#"
+                        className="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium"
+                        disabled={true}
+                      >
+                        <LockPersonIcon className="h-4 w-4 " /> Calendar
+                      </Link>
+                    </>
+                  )}
                 </div>
               </div>
             </div>
@@ -121,11 +153,13 @@ export const Navigation = ({ router }) => {
                   >
                     <span className="absolute -inset-1.5"></span>
                     <span className="sr-only">Open user menu</span>
-                    <img
-                      className="h-8 w-8 rounded-full"
-                      src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
-                      alt=""
-                    />
+                    <Avatar
+                      className="h-10 w-10 rounded-full"
+                      style={{ backgroundColor: user?.color }}
+                    >
+                      {user?.firstName &&
+                        user.firstName.charAt(0).toUpperCase()}
+                    </Avatar>
                   </button>
                 </div>
 
@@ -137,42 +171,65 @@ export const Navigation = ({ router }) => {
                     aria-labelledby="user-menu-button"
                     tabIndex="-1"
                   >
-                    <Link
-                      href="/SignIn"
-                      className="block px-4 py-2 text-sm text-gray-700"
-                      role="menuitem"
-                      tabIndex="-1"
-                      id="user-menu-item-0"
-                    >
-                      Login{' '}
-                    </Link>
-                    <Link
-                      href="#"
-                      className="block px-4 py-2 text-sm text-gray-700"
-                      role="menuitem"
-                      tabIndex="-1"
-                      id="user-menu-item-0"
-                    >
-                      Your Profile
-                    </Link>
-                    <Link
-                      href="#"
-                      className="block px-4 py-2 text-sm text-gray-700"
-                      role="menuitem"
-                      tabIndex="-1"
-                      id="user-menu-item-1"
-                    >
-                      Settings
-                    </Link>
-                    <Link
-                      href="#"
-                      className="block px-4 py-2 text-sm text-gray-700"
-                      role="menuitem"
-                      tabIndex="-1"
-                      id="user-menu-item-2"
-                    >
-                      Sign out
-                    </Link>
+                    <span className="block px-4 py-2 text-sm text-gray-700 font-bold">
+                      Hello, {user.firstName + ' ' + user.lastName}
+                    </span>
+
+                    {user?.admin && (
+                      <Link
+                        href="/Admin"
+                        className="block px-4 py-2 text-sm text-gray-700"
+                        role="menuitem"
+                        tabIndex="-1"
+                        id="user-menu-item-1"
+                      >
+                        Admin Panel
+                      </Link>
+                    )}
+                    {!user ? (
+                      <>
+                        <Link
+                          href="/SignIn"
+                          className="block px-4 py-2 text-sm text-gray-700"
+                          role="menuitem"
+                          tabIndex="-1"
+                          id="user-menu-item-0"
+                        >
+                          Login{' '}
+                        </Link>
+                        <Link
+                          href="/SignUp"
+                          className="block px-4 py-2 text-sm text-gray-700"
+                          role="menuitem"
+                          tabIndex="-1"
+                          id="user-menu-item-0"
+                        >
+                          SignUp
+                        </Link>
+                      </>
+                    ) : (
+                      <>
+                        {' '}
+                        <Link
+                          href="#"
+                          className="block px-4 py-2 text-sm text-gray-700"
+                          role="menuitem"
+                          tabIndex="-1"
+                          id="user-menu-item-1"
+                        >
+                          Settings
+                        </Link>
+                        <button
+                          onClick={handleSignOut}
+                          className="block px-4 py-2 text-sm text-gray-700 cursor-pointer"
+                          role="menuitem"
+                          tabIndex="-1"
+                          id="user-menu-item-2"
+                        >
+                          Sign out
+                        </button>
+                      </>
+                    )}
                   </div>
                 )}
               </div>
@@ -206,18 +263,45 @@ export const Navigation = ({ router }) => {
             >
               Dog Breeds
             </Link>
-            <Link
-              href="#"
-              className="text-gray-300 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium"
-            >
-              Projects
-            </Link>
-            <Link
-              href="#"
-              className="text-gray-300 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium"
-            >
-              Calendar
-            </Link>
+
+            {user ? (
+              <>
+                <Link
+                  href="#"
+                  className="text-gray-300 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium"
+                >
+                  Projects
+                </Link>
+                <Link
+                  href="/Calendar"
+                  className={`${
+                    currentPath === '/Calendar'
+                      ? 'bg-gray-900 text-white'
+                      : 'text-gray-300 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium"'
+                  } rounded-md px-3 py-2 text-sm font-medium`}
+                >
+                  Calendar
+                </Link>
+              </>
+            ) : (
+              <>
+                {' '}
+                <Link
+                  href="#"
+                  className="text-gray-300 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium"
+                  disabled={true}
+                >
+                  <LockPersonIcon className="h-4 w-4 " /> Projects
+                </Link>
+                <Link
+                  href="#"
+                  className="text-gray-300 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium"
+                  disabled={true}
+                >
+                  <LockPersonIcon className="h-4 w-4 " /> Calendar
+                </Link>
+              </>
+            )}
           </div>
         </div>
       </nav>

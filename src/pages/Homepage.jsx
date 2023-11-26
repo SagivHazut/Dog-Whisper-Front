@@ -2,10 +2,10 @@
 import React from 'react'
 import { Aboutus } from '@/components/Aboutus'
 
-export const Homepage = () => {
+export const Homepage = ({ user }) => {
   return (
     <div>
-      <Aboutus />
+      <Aboutus user={user} />
     </div>
   )
 }

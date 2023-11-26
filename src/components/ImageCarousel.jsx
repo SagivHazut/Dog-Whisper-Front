@@ -21,7 +21,7 @@ export const ImageCarousel = () => {
     fetchDataAndSetState()
   }, [])
 
-  //call the fects function
+  //call the facts function
   useEffect(() => {
     const fetchDataAndSetState = async () => {
       try {

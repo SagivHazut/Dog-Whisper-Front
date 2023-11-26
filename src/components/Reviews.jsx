@@ -8,6 +8,7 @@ export const Reviews = () => {
   const [reviews, setReviews] = useState([])
   const [expandedArray, setExpandedArray] = useState([])
 
+  //fetching reviews data
   useEffect(() => {
     const fetchData = async () => {
       try {

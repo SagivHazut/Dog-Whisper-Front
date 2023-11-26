@@ -21,7 +21,7 @@ const AnimatedCounter = ({ start, end }) => {
   )
 }
 
-export const Aboutus = () => {
+export const Aboutus = ({ user }) => {
   return (
     <>
       <div className="relative isolate overflow-hidden py-24 sm:py-32">
@@ -55,13 +55,26 @@ export const Aboutus = () => {
                 spy={true}
                 smooth={true}
                 duration={500}
+                style={{ cursor: 'pointer' }}
               >
                 Our Dogs <span aria-hidden="true">&rarr;</span>
               </ScrollLink>
-              <ScrollLink to="Team" spy={true} smooth={true} duration={1500}>
+              <ScrollLink
+                to="Team"
+                spy={true}
+                smooth={true}
+                duration={1500}
+                style={{ cursor: 'pointer' }}
+              >
                 Our team <span aria-hidden="true">&rarr;</span>
               </ScrollLink>
-              <ScrollLink to="Reviews" spy={true} smooth={true} duration={500}>
+              <ScrollLink
+                to="Reviews"
+                spy={true}
+                smooth={true}
+                duration={500}
+                style={{ cursor: 'pointer' }}
+              >
                 Customer reviews <span aria-hidden="true">&rarr;</span>
               </ScrollLink>
               <ScrollLink
@@ -69,6 +82,7 @@ export const Aboutus = () => {
                 spy={true}
                 smooth={true}
                 duration={500}
+                style={{ cursor: 'pointer' }}
               >
                 Contact Sections <span aria-hidden="true">&rarr;</span>
               </ScrollLink>
@@ -120,7 +134,7 @@ export const Aboutus = () => {
         <Reviews />{' '}
       </Element>
       <Element name="ContactSections">
-        <ContactSections />{' '}
+        <ContactSections user={user} />
       </Element>
     </>
   )
