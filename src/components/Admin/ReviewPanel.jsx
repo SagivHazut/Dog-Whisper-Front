@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import Sidebar from '../SideMenu'
-import { fetchReviews } from '@/libs/ContactApis'
+import { fetchReviews, deleteReview } from '@/libs/ContactApis'
 import { SortableTh } from './SortableTh'
 import SearchBar from './ReviewSearchBar'
 
@@ -21,12 +21,10 @@ export const ReviewPanel = () => {
       day: 'numeric',
       hour: 'numeric',
       minute: 'numeric',
-      second: 'numeric',
-      timeZoneName: 'short',
+      hour12: false,
     }
     return new Date(dateString).toLocaleString(undefined, options)
   }
-
   // Function to sort reviews based on category and alphabetically
   const sortReviews = (field) => {
     const sorted = [...reviews]
@@ -86,10 +84,22 @@ export const ReviewPanel = () => {
     }))
   }
 
+  // Function to handle review deletion
+  const handleDeleteReview = async (reviewId) => {
+    try {
+      await deleteReview(reviewId)
+      const updatedReviews = reviews.filter((review) => review._id !== reviewId)
+      setReviews(updatedReviews)
+    } catch (error) {
+      console.error('Error deleting review:', error)
+    }
+  }
   return (
     <>
-      <div className="flex flex-col items-center">
-        <div className="mb-4 text-2xl font-bold">Admin Panel Reviews</div>
+      <div className="flex flex-col ">
+        <div className="mb-4 text-2xl font-bold text-center">
+          Admin Panel Reviews
+        </div>
         <SearchBar onSearch={setSearchTerm} />
         <div className="overflow-x-auto w-full">
           <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
@@ -143,7 +153,7 @@ export const ReviewPanel = () => {
                   </td>
                   <td className="px-6 py-4">
                     <button
-                      onClick={() => deleteReview(review._id)}
+                      onClick={() => handleDeleteReview(review._id)}
                       className="text-red-600 hover:underline focus:outline-none"
                     >
                       Delete
