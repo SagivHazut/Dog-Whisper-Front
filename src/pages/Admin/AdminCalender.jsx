@@ -1,12 +1,12 @@
 'use client'
 import React from 'react'
-import Layout from './Layout'
-import AuthRoute from '../libs/AuthRoute'
+import Layout from '../Layout'
+import { AuthRouteForAdmin } from '../../libs/AuthRoute'
 import { AdminPanel } from '@/components/Admin/AdminPanel'
-import '../app/globals.css'
+import '../../app/globals.css'
 import { AdminFilter } from '@/components/Admin/AdminFilter'
 
-const ProtectedCalendarTable = AuthRoute(AdminFilter)
+const ProtectedCalendarTable = AuthRouteForAdmin(AdminFilter)
 
 const Admin = () => {
   return (

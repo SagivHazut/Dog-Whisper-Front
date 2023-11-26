@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { loginUser } from '../libs/UsersApi'
+import Link from 'next/link'
 
 const Login = () => {
   const [email, setEmail] = useState('')
@@ -80,13 +81,19 @@ const Login = () => {
             </div>
           </div>
 
-          <div>
+          <div className="flex space-x-4">
             <button
               type="submit"
-              className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+              className="flex-1 justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
             >
               Sign in
             </button>
+            <Link
+              href="/SignUp"
+              className="text-white bg-indigo-600 shadow-sm hover:bg-indigo-500 rounded-md px-3 py-2 text-sm font-medium focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+            >
+              Sign Up
+            </Link>
           </div>
         </form>
       </div>

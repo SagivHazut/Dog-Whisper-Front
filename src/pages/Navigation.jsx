@@ -3,6 +3,8 @@ import React, { useState } from 'react'
 import Link from 'next/link'
 import Avatar from '@mui/material/Avatar'
 import LockPersonIcon from '@mui/icons-material/LockPerson'
+import Image from 'next/image'
+import DogPaw from '../images/dogpaw.png'
 
 export const Navigation = ({ location, user, router }) => {
   const [isProfileOpen, setIsProfileOpen] = useState(false)
@@ -23,13 +25,13 @@ export const Navigation = ({ location, user, router }) => {
   }
   return (
     <>
-      <nav className="bg-gray-800">
+      <nav className="bg-blue-50">
         <div className="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
           <div className="relative flex h-16 items-center justify-between">
             <div className="absolute inset-y-0 left-0 flex items-center sm:hidden">
               <button
                 type="button"
-                className="relative inline-flex items-center justify-center rounded-md p-2 text-gray-400 hover:bg-gray-700 hover:text-white focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white"
+                className="relative inline-flex items-center justify-center rounded-md p-2 text-gray-900 hover:bg-gray-700 hover:text-white focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white"
                 aria-controls="mobile-menu"
                 aria-expanded={isMobileMenuOpen}
                 onClick={toggleMobileMenu}
@@ -68,22 +70,18 @@ export const Navigation = ({ location, user, router }) => {
             </div>
 
             <div className="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
-              <div className="flex flex-shrink-0 items-center">
-                <img
-                  className="h-8 w-auto"
-                  src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=500"
-                  alt="Your Company"
-                />
+              <div className="flex flex-shrink-0 items-center ">
+                <Image src={DogPaw} alt="Your Company" width={35} height={35} />
               </div>
               <div className="hidden sm:ml-6 sm:block">
-                <div className="flex space-x-4">
+                <div className="flex space-x-4 ">
                   <Link
                     href="/"
                     className={`${
                       currentPath === '/'
                         ? 'bg-gray-900 text-white'
-                        : 'text-gray-300 hover:bg-gray-700 hover:text-white'
-                    } rounded-md px-3 py-2 text-sm font-medium`}
+                        : 'text-gray-900 hover:bg-gray-700 hover:text-white'
+                    } rounded-md px-3 py-2 text-sm font-medium `}
                   >
                     Home Page
                   </Link>
@@ -92,7 +90,7 @@ export const Navigation = ({ location, user, router }) => {
                     className={`${
                       currentPath === '/Breeds'
                         ? 'bg-gray-900 text-white'
-                        : 'text-gray-300 hover:bg-gray-700 hover:text-white'
+                        : 'text-gray-900 hover:bg-gray-700 hover:text-white'
                     } rounded-md px-3 py-2 text-sm font-medium`}
                   >
                     Dog Breeds
@@ -102,19 +100,19 @@ export const Navigation = ({ location, user, router }) => {
                     <>
                       <Link
                         href="#"
-                        className="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium"
+                        className="text-gray-900 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium"
                       >
                         Projects
                       </Link>
                       <Link
-                        href="/Calendar"
+                        href="/TrainingSchedule"
                         className={`${
-                          currentPath === '/Calendar'
+                          currentPath === '/TrainingSchedule'
                             ? 'bg-gray-900 text-white'
-                            : 'text-gray-300 hover:bg-gray-700 hover:text-white'
+                            : 'text-gray-900 hover:bg-gray-700 hover:text-white'
                         } rounded-md px-3 py-2 text-sm font-medium`}
                       >
-                        Calendar
+                        Training Schedule
                       </Link>
                     </>
                   ) : (
@@ -122,14 +120,14 @@ export const Navigation = ({ location, user, router }) => {
                       {' '}
                       <Link
                         href="#"
-                        className="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium"
+                        className="text-gray-900 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium"
                         disabled={true}
                       >
                         <LockPersonIcon className="h-4 w-4 " /> Projects
                       </Link>
                       <Link
                         href="#"
-                        className="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium"
+                        className="text-gray-900 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium"
                         disabled={true}
                       >
                         <LockPersonIcon className="h-4 w-4 " /> Calendar
@@ -171,13 +169,17 @@ export const Navigation = ({ location, user, router }) => {
                     aria-labelledby="user-menu-button"
                     tabIndex="-1"
                   >
-                    <span className="block px-4 py-2 text-sm text-gray-700 font-bold">
-                      Hello, {user.firstName + ' ' + user.lastName}
-                    </span>
+                    {user ? (
+                      <span className="block px-4 py-2 text-sm text-gray-700 font-bold">
+                        Hello, {user?.firstName + ' ' + user?.lastName}
+                      </span>
+                    ) : (
+                      <></>
+                    )}
 
                     {user?.admin && (
                       <Link
-                        href="/Admin"
+                        href="/Admin/AdminCalender"
                         className="block px-4 py-2 text-sm text-gray-700"
                         role="menuitem"
                         tabIndex="-1"
@@ -247,7 +249,7 @@ export const Navigation = ({ location, user, router }) => {
               className={`${
                 currentPath === '/'
                   ? 'bg-gray-900 text-white'
-                  : 'text-gray-300 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium"'
+                  : 'text-gray-900 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium"'
               } rounded-md px-3 py-2 text-sm font-medium`}
               aria-current="page"
             >
@@ -258,7 +260,7 @@ export const Navigation = ({ location, user, router }) => {
               className={`${
                 currentPath === '/Breeds'
                   ? 'bg-gray-900 text-white'
-                  : 'text-gray-300 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium"'
+                  : 'text-gray-900 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium"'
               } rounded-md px-3 py-2 text-sm font-medium`}
             >
               Dog Breeds
@@ -268,7 +270,7 @@ export const Navigation = ({ location, user, router }) => {
               <>
                 <Link
                   href="#"
-                  className="text-gray-300 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium"
+                  className="text-gray-900 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium"
                 >
                   Projects
                 </Link>
@@ -277,7 +279,7 @@ export const Navigation = ({ location, user, router }) => {
                   className={`${
                     currentPath === '/Calendar'
                       ? 'bg-gray-900 text-white'
-                      : 'text-gray-300 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium"'
+                      : 'text-gray-900 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium"'
                   } rounded-md px-3 py-2 text-sm font-medium`}
                 >
                   Calendar
@@ -288,14 +290,14 @@ export const Navigation = ({ location, user, router }) => {
                 {' '}
                 <Link
                   href="#"
-                  className="text-gray-300 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium"
+                  className="text-gray-900 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium"
                   disabled={true}
                 >
                   <LockPersonIcon className="h-4 w-4 " /> Projects
                 </Link>
                 <Link
                   href="#"
-                  className="text-gray-300 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium"
+                  className="text-gray-900 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium"
                   disabled={true}
                 >
                   <LockPersonIcon className="h-4 w-4 " /> Calendar
