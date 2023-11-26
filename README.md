@@ -70,22 +70,38 @@ package.json
 postcss.config.js
 README.md
 tailwind.config.js
+```
 
-Features
+## Features
+
 User System: Register and log in to access personalized features.
+
 Admin Panel: Manage users and their training schedules.
+
 User Calendars: View and edit training schedules for the week.
+
 Homepage Reviews: Post reviews on the homepage.
+
 Dog Breeds Information: Explore detailed information about various dog breeds.
 
-Getting Started
+## Getting Started
 
 To run the Dog Whisperer Website locally, follow these steps:
 
-Clone the repository: git clone https://github.com/your-username/my-project.git
-Install dependencies: npm install
-Start the development server: npm start
-Usage
+Clone the repository:
+
+`git clone https://github.com/your-username/my-project.git`
+
+Install dependencies:
+
+`npm install`
+
+Start the development server:
+
+`npm start `
+
+## Usage
+
 Navigate to different pages to explore dog breeds, images, and use the website's features. Interact with the contact section for inquiries or feedback.
 
 ## Screenshots
@@ -111,4 +127,7 @@ Here are some screenshots of the Dog Whisperer Website:
 ### User Calendar
 
 ![User Calendar](src/images/userCalendar.png)
+
+```
+
 ```
