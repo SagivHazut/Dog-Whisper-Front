@@ -13,7 +13,6 @@ import Sidebar from '../SideMenu'
 export const AdminPanel = ({ users, fetchAllUsers, myUser }) => {
   const [modalIsOpen, setModalIsOpen] = useState(false)
   const [selectedUser, setSelectedUser] = useState(null)
-
   const [sortOrder, setSortOrder] = useState({
     field: null,
     ascending: true,

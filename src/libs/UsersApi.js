@@ -78,9 +78,9 @@ export const getAllUsers = async (token) => {
 }
 
 // updating the users trainingDays
-export const updateTrainingDays = async (token, trainingDays) => {
+export const updateTrainingDays = async (token, userId, trainingDays) => {
   try {
-    const response = await fetch(`${apiUrl}/update-training-days`, {
+    const response = await fetch(`${apiUrl}/update-training-days/${userId}`, {
       method: 'PUT',
       headers: {
         Authorization: token,
@@ -97,6 +97,35 @@ export const updateTrainingDays = async (token, trainingDays) => {
     }
   } catch (error) {
     console.error('Error updating training days:', error)
+  }
+}
+// updating the users Previous trainingDays
+export const updatePreviousTrainingDays = async (
+  token,
+  userId,
+  previousTrainings
+) => {
+  try {
+    const response = await fetch(
+      `${apiUrl}/update-previous-trainings/${userId}`,
+      {
+        method: 'POST',
+        headers: {
+          Authorization: token,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ previousTrainings }),
+      }
+    )
+
+    if (response.ok) {
+      console.log('Previous trainings updated successfully')
+    } else {
+      const errorData = await response.json()
+      console.error('Error updating previous trainings:', errorData.message)
+    }
+  } catch (error) {
+    console.error('Error updating previous trainings:', error)
   }
 }
 
@@ -124,6 +153,7 @@ export const getCurrentUserData = async (token, _id) => {
   }
 }
 
+// changing the user first name
 export const updateFirstName = async (token, userId, firstName) => {
   try {
     await fetch(`${apiUrl}/update-first-name/${userId}`, {
@@ -140,6 +170,7 @@ export const updateFirstName = async (token, userId, firstName) => {
   }
 }
 
+// changing the user last name
 export const updateLastName = async (token, userId, lastName) => {
   try {
     await fetch(`${apiUrl}/update-last-name/${userId}`, {
@@ -155,6 +186,7 @@ export const updateLastName = async (token, userId, lastName) => {
   }
 }
 
+// changing the user email
 export const updateEmail = async (token, userId, email) => {
   try {
     await fetch(`${apiUrl}/updateEmail/${userId}`, {
@@ -168,5 +200,22 @@ export const updateEmail = async (token, userId, email) => {
     console.log('Email updated successfully')
   } catch (error) {
     console.error('Error updating email:', error)
+  }
+}
+
+//changing the password
+export const updatePassword = async (token, userId, newPassword) => {
+  try {
+    await fetch(`${apiUrl}/update-password/${userId}`, {
+      method: 'PUT',
+      headers: {
+        Authorization: token,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ newPassword }),
+    })
+    console.log('Password updated successfully')
+  } catch (error) {
+    console.error('Error updating password:', error)
   }
 }

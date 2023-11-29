@@ -99,10 +99,14 @@ export const Navigation = ({ location, user, router }) => {
                   {user ? (
                     <>
                       <Link
-                        href="#"
-                        className="text-gray-900 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium"
+                        href="/MyPlan"
+                        className={`${
+                          currentPath === '/MyPlan'
+                            ? 'bg-gray-900 text-white'
+                            : 'text-gray-900 hover:bg-gray-700 hover:text-white'
+                        } rounded-md px-3 py-2 text-sm font-medium`}
                       >
-                        Projects
+                        Previous Training
                       </Link>
                       <Link
                         href="/TrainingSchedule"
@@ -123,7 +127,8 @@ export const Navigation = ({ location, user, router }) => {
                         className="text-gray-900 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium"
                         disabled={true}
                       >
-                        <LockPersonIcon className="h-4 w-4 " /> Projects
+                        <LockPersonIcon className="h-4 w-4 " /> Previous
+                        Training
                       </Link>
                       <Link
                         href="#"
@@ -213,7 +218,7 @@ export const Navigation = ({ location, user, router }) => {
                       <>
                         {' '}
                         <Link
-                          href="#"
+                          href="/Settings"
                           className="block px-4 py-2 text-sm text-gray-700"
                           role="menuitem"
                           tabIndex="-1"
@@ -269,38 +274,43 @@ export const Navigation = ({ location, user, router }) => {
             {user ? (
               <>
                 <Link
-                  href="#"
-                  className="text-gray-900 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium"
-                >
-                  Projects
-                </Link>
-                <Link
-                  href="/Calendar"
+                  href="/MyPlan"
                   className={`${
-                    currentPath === '/Calendar'
+                    currentPath === '/MyPlan'
                       ? 'bg-gray-900 text-white'
                       : 'text-gray-900 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium"'
                   } rounded-md px-3 py-2 text-sm font-medium`}
                 >
-                  Calendar
+                  Previous Training
+                </Link>
+                <Link
+                  href="/TrainingSchedule"
+                  className={`${
+                    currentPath === '/TrainingSchedule'
+                      ? 'bg-gray-900 text-white'
+                      : 'text-gray-900 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium"'
+                  } rounded-md px-3 py-2 text-sm font-medium`}
+                >
+                  Training Schedule
                 </Link>
               </>
             ) : (
               <>
                 {' '}
                 <Link
-                  href="#"
+                  href="/MyPlan"
                   className="text-gray-900 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium"
                   disabled={true}
                 >
-                  <LockPersonIcon className="h-4 w-4 " /> Projects
+                  <LockPersonIcon className="h-4 w-4 " />
+                  Previous Training
                 </Link>
                 <Link
                   href="#"
                   className="text-gray-900 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium"
                   disabled={true}
                 >
-                  <LockPersonIcon className="h-4 w-4 " /> Calendar
+                  <LockPersonIcon className="h-4 w-4 " /> Training Schedule
                 </Link>
               </>
             )}

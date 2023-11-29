@@ -6,7 +6,6 @@ import SearchBar from './ReviewSearchBar'
 
 export const ReviewPanel = () => {
   const [reviews, setReviews] = useState([])
-  const [expandedArray, setExpandedArray] = useState([])
   const [sortOrder, setSortOrder] = useState({
     field: 'fullName',
     ascending: true,
@@ -47,12 +46,6 @@ export const ReviewPanel = () => {
       try {
         const data = await fetchReviews()
         setReviews(data)
-        setExpandedArray(
-          data.reduce((acc, review) => {
-            acc[review._id] = false
-            return acc
-          }, {})
-        )
       } catch (error) {
         console.error('Error in component:', error)
       }

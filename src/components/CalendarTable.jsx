@@ -7,7 +7,6 @@ export const CalendarTable = () => {
 
   useEffect(() => {
     const storedUserData = localStorage.getItem('user')
-
     if (storedUserData) {
       try {
         const parsedUser = JSON.parse(storedUserData)
@@ -18,6 +17,7 @@ export const CalendarTable = () => {
           if (userData) {
             setUser(userData)
             setTrainingSchedule(userData.trainingDays || [])
+            localStorage.setItem('user', JSON.stringify(userData))
           } else {
             console.error('Error getting current user data')
           }
@@ -75,7 +75,9 @@ export const CalendarTable = () => {
                       }`}
                     >
                       {isTrainingSession && (
-                        <span className="activity">{session.activity}</span>
+                        <span className="activity w-full break-words">
+                          {session.activity}
+                        </span>
                       )}
                     </td>
                   )

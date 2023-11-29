@@ -1,8 +1,24 @@
 import React, { useState } from 'react'
-import { updateTrainingDays } from '../libs/UsersApi'
+import {
+  updateTrainingDays,
+  updatePreviousTrainingDays,
+} from '../libs/UsersApi'
 
 export const EditableCalender = ({ user, closeModal, fetchAllUsers }) => {
   const [schedule, setSchedule] = useState(user?.trainingDays || [])
+
+  const getDayDate = (dayIndex) => {
+    const currentDate = new Date()
+    const todayIndex = currentDate.getDay()
+    const difference = dayIndex - todayIndex
+    const targetDate = new Date(currentDate)
+    targetDate.setDate(currentDate.getDate() + difference + 1)
+    return targetDate.toISOString().split('T')[0]
+  }
+
+  const handlerClear = async () => {
+    setSchedule([])
+  }
 
   const handleSave = async () => {
     try {
@@ -13,10 +29,21 @@ export const EditableCalender = ({ user, closeModal, fetchAllUsers }) => {
         console.error('User token not found')
         return
       }
-      const filteredSchedule = schedule.filter(
+
+      const userId = user?._id
+      const updatedSchedule = schedule.map((item) => {
+        return {
+          ...item,
+          date: item.date || getDayDate(days.indexOf(item.day) - 1),
+        }
+      })
+
+      const filteredSchedule = updatedSchedule.filter(
         (item) => item.activity.trim() !== ''
       )
-      await updateTrainingDays(userToken, filteredSchedule)
+
+      await updateTrainingDays(userToken, userId, filteredSchedule)
+      await updatePreviousTrainingDays(userToken, userId, filteredSchedule)
 
       fetchAllUsers()
       closeModal()
@@ -46,22 +73,31 @@ export const EditableCalender = ({ user, closeModal, fetchAllUsers }) => {
     const index = newSchedule.findIndex(
       (item) => item.day === day && item.hour === hour
     )
+
+    const trimmedValue = event.target.value.trim()
+
     if (index !== -1) {
-      const trimmedValue = event.target.value.trim()
       if (trimmedValue === '') {
         newSchedule.splice(index, 1)
       } else {
         newSchedule[index].activity = trimmedValue
       }
     } else {
-      const trimmedValue = event.target.value.trim()
       if (trimmedValue !== '') {
-        newSchedule.push({ day, hour, activity: trimmedValue })
+        const selectedDate = getDayDate(days.indexOf(day) - 1) // -1 to adjust for 'Hours' column
+        newSchedule.push({
+          day,
+          hour,
+          activity: trimmedValue,
+          date: selectedDate,
+        })
       }
     }
 
     setSchedule(newSchedule)
   }
+
+  const isDesktop = window.innerWidth > 600
 
   return (
     <div className="calendar-container">
@@ -70,6 +106,17 @@ export const EditableCalender = ({ user, closeModal, fetchAllUsers }) => {
       </h2>
 
       <div className="scroll-container">
+        {isDesktop && (
+          <div className="dates-row">
+            <div className="empty-cell"></div>
+            {days.slice(1).map((day, index) => (
+              <div key={index} className="date-cell">
+                {getDayDate(index)}
+              </div>
+            ))}
+          </div>
+        )}
+
         <table className="calendar">
           <thead>
             <tr>
@@ -83,7 +130,7 @@ export const EditableCalender = ({ user, closeModal, fetchAllUsers }) => {
               <tr key={hour}>
                 <td className="hour-cell">{`${hour}:00`}</td>
 
-                {days.slice(0, -1).map((day, index) => {
+                {days.slice(1).map((day, index) => {
                   const scheduleItem = getScheduleItem(day, hour)
 
                   return (
@@ -100,6 +147,11 @@ export const EditableCalender = ({ user, closeModal, fetchAllUsers }) => {
                           handleInputChange(day, hour, event)
                         }
                       />
+                      <div className="date-display">
+                        {scheduleItem
+                          ? `${scheduleItem.date} ${day} ${hour}:00`
+                          : ''}
+                      </div>
                     </td>
                   )
                 })}
@@ -108,6 +160,9 @@ export const EditableCalender = ({ user, closeModal, fetchAllUsers }) => {
           </tbody>
         </table>
         <div className="button-container">
+          <button className="close-button" onClick={handlerClear}>
+            Clear
+          </button>
           <button className="close-button" onClick={closeModal}>
             Close
           </button>
@@ -117,6 +172,18 @@ export const EditableCalender = ({ user, closeModal, fetchAllUsers }) => {
         </div>
       </div>
       <style jsx>{`
+        .dates-row {
+          display: flex;
+        }
+        .empty-cell {
+          flex: 1;
+          text-align: center;
+        }
+        .date-cell {
+          flex: 1;
+          text-align: center;
+          font-weight: bold;
+        }
         .calendar-container {
           display: flex;
           flex-direction: column;

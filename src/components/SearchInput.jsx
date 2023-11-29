@@ -11,8 +11,6 @@ export const SearchInput = ({ apiData }) => {
     if (inputValue.trim() === '') {
       return options
     }
-
-    // Filter options based on the input value
     return options.filter((option) =>
       option.toLowerCase().includes(inputValue.toLowerCase())
     )

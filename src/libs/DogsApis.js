@@ -3,7 +3,7 @@ const TheDogApi = 'http://localhost:8080/api/data'
 // Full array of dogs breeds
 export const fetchDogsImages = async () => {
   try {
-    const response = await fetch(`${TheDogApi}/dogsImages`)
+    const response = await fetch(`${TheDogApi}/dogsBreeds`)
     if (!response.ok) {
       throw new Error(`HTTP error! Status: ${response.status}`)
     }
@@ -33,7 +33,7 @@ export const fetchData = async () => {
 // Generate random images
 export const HomepageDogImages = async () => {
   try {
-    const response = await fetch(`${TheDogApi}/homepageDogImages`)
+    const response = await fetch(`${TheDogApi}/dogsImages`)
 
     if (!response.ok) {
       throw new Error(`HTTP error! Status: ${response.status}`)
