@@ -1,10 +1,11 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { validateForm, submitForm } from '../libs/ContactApis'
 
-export const ContactSections = ({ user }) => {
+export const ContactSections = () => {
+  const [storedUserData, setStoredUserData] = useState({})
   const [formData, setFormData] = useState({
-    fullName: user ? user.firstName : '',
-    email: user ? user.email : '',
+    fullName: '',
+    email: '',
     message: '',
   })
   const [errors, setErrors] = useState({
@@ -12,9 +13,20 @@ export const ContactSections = ({ user }) => {
     email: '',
     message: '',
   })
-
+  console.log(formData)
   const [showSuccessModal, setShowSuccessModal] = useState(false)
 
+  useEffect(() => {
+    if (typeof window !== 'undefined' && window.localStorage) {
+      const storedData = JSON.parse(localStorage.getItem('user')) || {}
+      setStoredUserData(storedData)
+      setFormData({
+        fullName: storedData.firstName || '',
+        email: storedData.email || '',
+        message: '',
+      })
+    }
+  }, [])
   const handleChange = (e) => {
     setFormData({
       ...formData,
@@ -41,8 +53,8 @@ export const ContactSections = ({ user }) => {
 
     if (submitResult.success) {
       setFormData({
-        fullName: user ? user : '',
-        email: user ? user : '',
+        fullName: storedUserData ? storedUserData : '',
+        email: storedUserData ? storedUserData : '',
         message: '',
       })
       setShowSuccessModal(true)
@@ -68,8 +80,8 @@ export const ContactSections = ({ user }) => {
           </p>
         </div>
       </div>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        <div className="mb-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 justify-center items-center">
+        <div className="mb-6 flex flex-col items-center">
           <label
             htmlFor="full-name"
             className="block text-sm font-semibold leading-6 text-gray-900"
@@ -82,14 +94,14 @@ export const ContactSections = ({ user }) => {
               name="fullName"
               id="full-name"
               autoComplete="given-name"
-              defaultValue={user ? user.firstName : ''}
+              defaultValue={storedUserData ? storedUserData.firstName : ''}
               onChange={handleChange}
-              readOnly={user ? true : false}
-              className="w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+              readOnly={storedUserData ? true : false}
+              className="w-full w-96 rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
             />
           </div>
         </div>
-        <div className="mb-6">
+        <div className="mb-6 flex flex-col items-center">
           <label
             htmlFor="email"
             className="block text-sm font-semibold leading-6 text-gray-900"
@@ -102,14 +114,14 @@ export const ContactSections = ({ user }) => {
               name="email"
               id="email"
               autoComplete="email"
-              defaultValue={user ? user.email : ''}
+              defaultValue={storedUserData ? storedUserData.email : ''}
               onChange={handleChange}
-              readOnly={user ? true : false}
-              className="w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+              readOnly={storedUserData ? true : false}
+              className="w-full w-96  rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
             />
           </div>
         </div>
-        <div className="mb-6">
+        <div className="mb-6 flex flex-col items-center">
           <label
             htmlFor="message"
             className="block text-sm font-semibold leading-6 text-gray-900"
@@ -123,22 +135,21 @@ export const ContactSections = ({ user }) => {
               rows="1"
               value={formData.message}
               onChange={handleChange}
-              className="w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+              className="w-full  w-96 rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
             ></textarea>
           </div>
         </div>
-        <div className="mb-6 flex items-center">
+        <div className="mb-6 "></div>
+        <div className="mb-6">
           {Object.entries(errors).map(([key, error], index) => (
-            <p key={index} className="text-red-500">
+            <p key={index} className="text-red-500 text-center">
               {error}
             </p>
           ))}
-        </div>
-        <div className="mb-6">
           <button
             type="submit"
             onClick={handleSubmit}
-            className="block w-full rounded-md bg-indigo-600 px-3.5 py-2.5 text-center text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+            className="block w-full mt-5 rounded-md bg-indigo-600 px-4 py-3 text-center text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus:outline-none focus:ring focus:border-indigo-300"
           >
             Let's talk
           </button>
