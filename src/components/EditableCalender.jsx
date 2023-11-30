@@ -74,21 +74,21 @@ export const EditableCalender = ({ user, closeModal, fetchAllUsers }) => {
       (item) => item.day === day && item.hour === hour
     )
 
-    const trimmedValue = event.target.value.trim()
+    const value = event.target.value
 
     if (index !== -1) {
-      if (trimmedValue === '') {
+      if (value === '') {
         newSchedule.splice(index, 1)
       } else {
-        newSchedule[index].activity = trimmedValue
+        newSchedule[index].activity = value
       }
     } else {
-      if (trimmedValue !== '') {
-        const selectedDate = getDayDate(days.indexOf(day) - 1) // -1 to adjust for 'Hours' column
+      if (value !== '') {
+        const selectedDate = getDayDate(days.indexOf(day) - 1)
         newSchedule.push({
           day,
           hour,
-          activity: trimmedValue,
+          activity: value,
           date: selectedDate,
         })
       }
@@ -111,7 +111,7 @@ export const EditableCalender = ({ user, closeModal, fetchAllUsers }) => {
             <div className="empty-cell"></div>
             {days.slice(1).map((day, index) => (
               <div key={index} className="date-cell">
-                {getDayDate(index)}
+                {getDayDate(index - 1)}
               </div>
             ))}
           </div>

@@ -48,13 +48,15 @@ const Sidebar = () => {
 
         .toggle-btn {
           position: absolute;
-          top: 11px;
-          left: ${isOpen ? '30px' : '320px'};
+          top: 10px;
+          left: ${isOpen ? '20px' : '320px'};
           background: none;
           border: none;
           color: black;
           font-size: 24px;
           cursor: pointer;
+          z-index: 2; /* Ensures the button is above other elements */
+          transition: left 0.3s ease; /* Add transition effect to the button */
         }
 
         nav {
@@ -84,5 +86,4 @@ const Sidebar = () => {
     </div>
   )
 }
-
 export default Sidebar

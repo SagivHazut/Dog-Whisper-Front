@@ -61,7 +61,7 @@ export const CalendarTable = () => {
               <tr key={hour}>
                 <td className="hour-cell">{`${hour}:00`}</td>
 
-                {days.slice(0, -1).map((day, index) => {
+                {days.slice(-7).map((day, index) => {
                   const session = trainingSchedule.find(
                     (s) => s.day === day && s.hour === hour
                   )

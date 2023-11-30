@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { validateForm, submitForm } from '../libs/ContactApis'
 
 export const ContactSections = () => {
-  const [storedUserData, setStoredUserData] = useState({})
+  const [storedUserData, setStoredUserData] = useState(null)
   const [showSuccessModal, setShowSuccessModal] = useState(false)
   const [formData, setFormData] = useState({
     fullName: '',
@@ -17,11 +17,11 @@ export const ContactSections = () => {
 
   useEffect(() => {
     if (typeof window !== 'undefined' && window.localStorage) {
-      const storedData = JSON.parse(localStorage.getItem('user')) || {}
+      const storedData = JSON.parse(localStorage.getItem('user')) || null
       setStoredUserData(storedData)
       setFormData({
-        fullName: storedData.firstName || '',
-        email: storedData.email || '',
+        fullName: storedData?.firstName || '',
+        email: storedData?.email || '',
         message: '',
       })
     }
