@@ -43,7 +43,8 @@ export const registerUser = async (formData) => {
 
     if (response.ok) {
       const data = await response.json()
-      localStorage.setItem('user', JSON.stringify(data))
+      localStorage.setItem('user', JSON.stringify(data.user))
+      localStorage.setItem('token', data.token)
     } else {
       const errorData = await response.json()
       console.error('Error:', errorData.message)
@@ -52,6 +53,7 @@ export const registerUser = async (formData) => {
     console.error('Error submitting form:', error)
   }
 }
+
 //getting all the users array
 export const getAllUsers = async (token) => {
   try {

@@ -33,7 +33,7 @@ export const fetchData = async () => {
 // Generate random images
 export const HomepageDogImages = async () => {
   try {
-    const response = await fetch(`${TheDogApi}/dogsImages`)
+    const response = await fetch(`${TheDogApi}/homepageDogImages`)
 
     if (!response.ok) {
       throw new Error(`HTTP error! Status: ${response.status}`)

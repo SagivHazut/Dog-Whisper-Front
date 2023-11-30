@@ -3,7 +3,7 @@ import { getCurrentUserData } from '../libs/UsersApi'
 
 export const MyPlanInfo = () => {
   const [user, setUser] = useState(null)
-  console.log(user)
+
   useEffect(() => {
     const storedUserData = localStorage.getItem('user')
 
