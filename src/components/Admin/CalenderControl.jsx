@@ -13,9 +13,12 @@ export const CalenderControl = () => {
   const [user, setUser] = useState('')
   const [trainingSchedule, setTrainingSchedule] = useState([])
   const [userList, setUserList] = useState([])
+  const [myUser, setMyUser] = useState([])
 
   const fetchAllUsers = async () => {
     const userToken = localStorage.getItem('user')
+    const parsedUser = JSON.parse(userToken)
+    setMyUser(parsedUser)
     try {
       if (userToken) {
         const fetchedUsers = await getAllUsers(userToken)
@@ -143,7 +146,6 @@ export const CalenderControl = () => {
           {userGroups.map((group, groupIndex) => (
             <div key={groupIndex} className="user-row">
               {group.map((user, userIndex) => (
-                // Use a combination of groupIndex and userIndex to ensure uniqueness
                 <DraggableUser key={`${groupIndex}-${userIndex}`} user={user} />
               ))}
             </div>
@@ -151,7 +153,7 @@ export const CalenderControl = () => {
         </div>
 
         <h2 className="text-2xl font-bold mb-4">
-          Welcome back, {user.firstName} {user.lastName}! <br />
+          Welcome back, {myUser.firstName} {myUser.lastName}! <br />
           Schedule your customer Training Schedule
         </h2>
         <TrashCan onDrop={handleRemoveUser} />
