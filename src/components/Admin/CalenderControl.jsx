@@ -18,7 +18,6 @@ export const CalenderControl = () => {
   useEffect(async () => {
     const userToken = localStorage.getItem('user')
     const fetchedUsers = await getAllUsers(userToken)
-    console.log('Fetched Users:', fetchedUsers)
     setUserList(fetchedUsers || [])
   }, [])
 
@@ -33,25 +32,26 @@ export const CalenderControl = () => {
     )
   }
 
-  useEffect(() => {
-    const storedUserData = localStorage.getItem('user')
-    if (storedUserData) {
-      try {
-        const parsedUser = JSON.parse(storedUserData)
-        const token = parsedUser.token
-        const id = parsedUser._id
+  useEffect(async () => {
+    const userToken = localStorage.getItem('user')
+    const fetchedUsers = await getAllUsers(userToken)
+    setUserList(fetchedUsers || [])
 
-        getCurrentUserData(token, id).then((userData) => {
-          if (userData) {
-            setUser(userData)
-            setTrainingSchedule(userData.trainingDays || [])
-            localStorage.setItem('user', JSON.stringify(userData))
-          } else {
-          }
+    // Combine training schedules from all users
+    let combinedTrainingSchedule = []
+    fetchedUsers.forEach((user) => {
+      user.trainingDays.forEach((session) => {
+        combinedTrainingSchedule.push({
+          ...session,
+          userId: user._id,
+          userName: `${user.firstName} ${user.lastName}`,
         })
-      } catch (error) {}
-    }
+      })
+    })
+
+    setTrainingSchedule(combinedTrainingSchedule)
   }, [])
+
   const handleDropUser = (userId, userName, day, hour) => {
     setTrainingSchedule((prevTrainingSchedule) => {
       const isCellOccupied = prevTrainingSchedule.some(

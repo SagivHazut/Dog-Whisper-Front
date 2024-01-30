@@ -12,11 +12,10 @@ const DraggableEditableCell = ({ session, handleSave, handleRemove }) => {
       }
     },
   }))
-
   return (
     <div ref={drag} className="draggable-editable-cell">
       <EditableCell
-        value={session.activity}
+        value={session.userName}
         handleSave={(newValue) => handleSave(session.id, newValue)}
       />
     </div>
