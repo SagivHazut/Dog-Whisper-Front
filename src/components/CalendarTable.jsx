@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { getCurrentUserData } from '../libs/UsersApi'
+import '../styles/CalendarControl.css'
 
 export const CalendarTable = () => {
   const [user, setUser] = useState('')
@@ -87,77 +88,6 @@ export const CalendarTable = () => {
           </tbody>
         </table>
       </div>
-      <style jsx>{`
-        .calendar-container {
-          display: flex;
-          flex-direction: column;
-          align-items: center;
-          margin-top: 20px;
-          overflow-x: auto;
-        }
-
-        h2 {
-          margin-bottom: 10px;
-        }
-
-        .scroll-container {
-          overflow-x: auto;
-        }
-
-        .calendar {
-          border-collapse: collapse;
-        }
-
-        th,
-        td {
-          border: 1px solid #ddd;
-          text-align: center;
-        }
-
-        th {
-          background-color: #f2f2f2;
-        }
-
-        .hour-cell {
-          background-color: #e6e6e6;
-          font-weight: bold;
-        }
-
-        .calendar-cell {
-          position: relative;
-        }
-
-        .training-session {
-          background-color: #b3d9ff;
-        }
-
-        .activity {
-          position: absolute;
-          top: 50%;
-          left: 50%;
-          transform: translate(-50%, -50%);
-          font-weight: bold;
-        }
-
-        @media (max-width: 600px) {
-          .calendar {
-            font-size: 10px;
-          }
-          th,
-          td {
-            padding: 1px;
-          }
-        }
-
-        @media (min-width: 601px) {
-          th,
-          td {
-            width: 10vw;
-
-            padding: 3px;
-          }
-        }
-      `}</style>
     </div>
   )
 }

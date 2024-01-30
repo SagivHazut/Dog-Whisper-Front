@@ -32,6 +32,14 @@ const Sidebar = () => {
               Review Panel
             </Link>
           </li>
+          <li>
+            <Link
+              href="/Admin/Calender"
+              className="block px-4 py-2 text-sm text-gray-700"
+            >
+              Calender
+            </Link>
+          </li>
         </ul>
       </nav>
 
@@ -55,8 +63,8 @@ const Sidebar = () => {
           color: black;
           font-size: 24px;
           cursor: pointer;
-          z-index: 2; /* Ensures the button is above other elements */
-          transition: left 0.3s ease; /* Add transition effect to the button */
+          z-index: 2;
+          transition: left 0.3s ease;
         }
 
         nav {
