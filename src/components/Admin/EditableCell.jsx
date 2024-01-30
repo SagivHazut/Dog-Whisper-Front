@@ -1,28 +1,48 @@
 import React, { useState } from 'react'
+import { updateTrainingDays } from '../../libs/UsersApi'
 
-export const EditableCell = ({ value, handleSave }) => {
+export const EditableCell = ({ value, sessionId, fetchAllUsers, user }) => {
   const [editing, setEditing] = useState(false)
-  const [editedValue, setEditedValue] = useState(value)
+  const [editedValue, setEditedValue] = useState(user.activity)
   const handleEdit = () => {
     setEditing(true)
   }
-
-  const handleSaveClick = () => {
-    handleSave(editedValue)
-    setEditing(false)
-  }
-
   const handleCancel = () => {
-    setEditedValue(value)
+    setEditedValue(user.activity)
     setEditing(false)
   }
 
   const handleChange = (e) => {
     setEditedValue(e.target.value)
   }
+  const handleSaveClick = async () => {
+    const parsedUser = localStorage.getItem('user')
+    const userToken = JSON.parse(parsedUser)
+    if (!userToken) {
+      console.error('User token not found')
+      return
+    }
+
+    try {
+      const updatedSession = {
+        activity: editedValue,
+        date: user.user,
+        day: user.day,
+        hour: user.hour,
+        id: sessionId,
+      }
+
+      await updateTrainingDays(userToken, user.userId, [updatedSession])
+      fetchAllUsers()
+
+      setEditing(false)
+    } catch (error) {
+      console.error('Error saving training days:', error)
+    }
+  }
 
   return (
-    <td className="px-6 py-4">
+    <div className="px-6 py-4">
       {editing ? (
         <>
           <input
@@ -43,6 +63,6 @@ export const EditableCell = ({ value, handleSave }) => {
           {value}
         </span>
       )}
-    </td>
+    </div>
   )
 }

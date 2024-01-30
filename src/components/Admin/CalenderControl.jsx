@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react'
-import { DndProvider, useDrag, useDrop } from 'react-dnd'
+import { DndProvider } from 'react-dnd'
 import { HTML5Backend } from 'react-dnd-html5-backend'
-import { getCurrentUserData } from '../../libs/UsersApi'
 import { getAllUsers } from '../../libs/UsersApi'
 import { EditableCell } from './EditableCell'
 import Sidebar from '../SideMenu'
@@ -15,6 +14,23 @@ export const CalenderControl = () => {
   const [trainingSchedule, setTrainingSchedule] = useState([])
   const [userList, setUserList] = useState([])
 
+  const fetchAllUsers = async () => {
+    const userToken = localStorage.getItem('user')
+    try {
+      if (userToken) {
+        const fetchedUsers = await getAllUsers(userToken)
+        setUser(fetchedUsers || [])
+      } else {
+        console.error('User token not available.')
+      }
+    } catch (error) {
+      console.error('Failed to fetch users:', error)
+    }
+  }
+
+  useEffect(() => {
+    fetchAllUsers()
+  }, [])
   useEffect(async () => {
     const userToken = localStorage.getItem('user')
     const fetchedUsers = await getAllUsers(userToken)
@@ -37,37 +53,39 @@ export const CalenderControl = () => {
     const fetchedUsers = await getAllUsers(userToken)
     setUserList(fetchedUsers || [])
 
-    // Combine training schedules from all users
     let combinedTrainingSchedule = []
     fetchedUsers.forEach((user) => {
       user.trainingDays.forEach((session) => {
         combinedTrainingSchedule.push({
           ...session,
           userId: user._id,
-          userName: `${user.firstName} ${user.lastName}`,
+          firstName: `${user.firstName}`,
+          lastName: ` ${user.lastName}`,
         })
       })
     })
-
     setTrainingSchedule(combinedTrainingSchedule)
   }, [])
 
-  const handleDropUser = (userId, userName, day, hour) => {
+  const handleDropUser = (userId, firstName, lastName, day, hour, _id) => {
     setTrainingSchedule((prevTrainingSchedule) => {
       const isCellOccupied = prevTrainingSchedule.some(
         (session) => session.day === day && session.hour === hour
       )
-
       if (isCellOccupied) {
         alert('This cell is already occupied. Please choose a different cell.')
         return prevTrainingSchedule
       } else {
         const newUserSession = {
-          id: `session-${new Date().getTime()}`,
-          userId: userId,
+          activity: '',
+          date: '',
           day: day,
+          firstName: firstName,
           hour: hour,
-          activity: userName,
+          lastName: lastName,
+          userId: userId,
+          _id: userId,
+          sessionId: `session-${new Date().getTime()}`,
         }
 
         return [...prevTrainingSchedule, newUserSession]
@@ -122,10 +140,11 @@ export const CalenderControl = () => {
     <DndProvider backend={HTML5Backend}>
       <div className="calendar-container">
         <div className="user-list">
-          {userGroups.map((group, index) => (
-            <div key={index} className="user-row">
-              {group.map((user) => (
-                <DraggableUser key={user.id} user={user} />
+          {userGroups.map((group, groupIndex) => (
+            <div key={groupIndex} className="user-row">
+              {group.map((user, userIndex) => (
+                // Use a combination of groupIndex and userIndex to ensure uniqueness
+                <DraggableUser key={`${groupIndex}-${userIndex}`} user={user} />
               ))}
             </div>
           ))}
@@ -168,13 +187,14 @@ export const CalenderControl = () => {
                         handleRemoveUserFromSession={
                           handleRemoveUserFromSession
                         }
+                        fetchAllUsers={fetchAllUsers}
                       >
                         {isTrainingSession ? (
                           <EditableCell
                             value={session.activity}
-                            handleSave={(newValue) =>
-                              handleSave(session.id, newValue)
-                            }
+                            sessionId={session.id}
+                            userId={session.userId}
+                            fetchAllUsers={fetchAllUsers}
                           />
                         ) : null}
                       </DroppableCell>

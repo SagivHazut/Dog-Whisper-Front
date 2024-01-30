@@ -137,12 +137,14 @@ export const AdminPanel = ({ users, fetchAllUsers, myUser }) => {
                     handleSave(user._id, 'firstName', value)
                   }
                 />
-                <EditableCell
-                  value={user.lastName}
-                  handleSave={(value) =>
-                    handleSave(user._id, 'lastName', value)
-                  }
-                />
+                <td>
+                  <EditableCell
+                    value={user.lastName}
+                    handleSave={(value) =>
+                      handleSave(user._id, 'lastName', value)
+                    }
+                  />
+                </td>
                 <EditableCell
                   value={user.email}
                   handleSave={(value) => handleSave(user._id, 'email', value)}

@@ -6,14 +6,14 @@ const DraggableUser = ({ user, session }) => {
     type: 'user',
     item: {
       id: user._id,
-      name: user.firstName + ' ' + user.lastName,
+      firstName: user.firstName,
+      lastName: user.lastName,
       sessionId: session ? session.id : null,
     },
     collect: (monitor) => ({
       isDragging: !!monitor.isDragging(),
     }),
   }))
-
   return (
     <div ref={drag} className={`user-item ${isDragging ? 'dragging' : ''}`}>
       <div className="user-list-item">

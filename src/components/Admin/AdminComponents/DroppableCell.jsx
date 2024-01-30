@@ -9,12 +9,13 @@ const DroppableCell = ({
   onDropUser,
   trainingSchedule,
   handleRemoveUserFromSession,
+  fetchAllUsers,
 }) => {
   const [{ isOver }, drop] = useDrop(() => ({
     accept: ['session', 'user'],
     drop: (item, monitor) => {
       if (monitor.getItemType() === 'user') {
-        onDropUser(item.id, item.name, day, hour)
+        onDropUser(item.id, item.firstName, item.lastName, day, hour)
       } else if (monitor.getItemType() === 'session') {
         onDropSession(item.id, day, hour)
       }
@@ -37,8 +38,8 @@ const DroppableCell = ({
       {isTrainingSession ? (
         <DraggableEditableCell
           session={session}
-          handleSave={(newValue) => handleSave(session.id, newValue)}
           handleRemove={handleRemoveUserFromSession}
+          fetchAllUsers={fetchAllUsers}
         />
       ) : null}
     </td>
